@@ -99,6 +99,10 @@ namespace TargetClearCS
                     }
                 }
             }
+            if (!UserInputEvaluationIsATarget)
+            {
+                Console.WriteLine("That was not a target. You will now be penalised.");
+            }
             return UserInputEvaluationIsATarget;
         }
 
@@ -151,6 +155,7 @@ namespace TargetClearCS
                     }
                     else
                     {
+                        Console.WriteLine("Error: your expression contained invalid number(s).");
                         return false;
                     }
                 }
@@ -332,7 +337,23 @@ namespace TargetClearCS
 
         static bool CheckIfUserInputValid(string UserInput)
         {
-            return Regex.IsMatch(UserInput, @"^([0-9]+[\+\-\*\/])+[0-9]+$");
+            if (Regex.IsMatch(UserInput, @"^([0-9]+[\+\-\*\/])+[0-9]+$"))
+            {
+                if (Regex.IsMatch(UserInput, @"^(0/)"))
+                {
+                    Console.WriteLine("Invalid: Divided by zero.");
+                    return false;
+                }
+                else
+                { 
+                    return true;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid infix expression.");
+                return false;
+            }
         }
 
         static int GetTarget(int MaxTarget)
