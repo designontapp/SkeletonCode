@@ -57,6 +57,13 @@ namespace TargetClearCS
                 Console.Write("Enter an expression: ");
                 UserInput = Console.ReadLine();
                 Console.WriteLine();
+
+                if (UserInput == "QUIT")
+                {
+                    GameOver = true;
+                    continue;
+                }
+
                 if (CheckIfUserInputValid(UserInput))
                 {
                     UserInputInRPN = ConvertToRPN(UserInput);
