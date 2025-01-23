@@ -40,7 +40,7 @@ namespace TargetClearCS
                 TrainingGame = false;
                 Targets = CreateTargets(MaxNumberOfTargets, MaxTarget);
             }
-            NumbersAllowed = FillNumbers(NumbersAllowed, TrainingGame, MaxNumber);
+            NumbersAllowed = FillNumbers(NumbersAllowed, TrainingGame, "standard", MaxNumber);
             PlayGame(Targets, NumbersAllowed, TrainingGame, MaxTarget, MaxNumber);
             Console.ReadLine();
         }
@@ -65,7 +65,7 @@ namespace TargetClearCS
                         if (CheckIfUserInputEvaluationIsATarget(Targets, UserInputInRPN, ref Score))
                         {
                             RemoveNumbersUsed(UserInput, MaxNumber, NumbersAllowed);
-                            NumbersAllowed = FillNumbers(NumbersAllowed, TrainingGame, MaxNumber);
+                            NumbersAllowed = FillNumbers(NumbersAllowed, TrainingGame, "standard", MaxNumber);
                         }
                     }
                 }
@@ -359,7 +359,7 @@ namespace TargetClearCS
             return Targets;
         }
 
-        static List<int> FillNumbers(List<int> NumbersAllowed, bool TrainingGame, int MaxNumber)
+        static List<int> FillNumbers(List<int> NumbersAllowed, bool TrainingGame, string difficulty, int MaxNumber)
         {
             if (TrainingGame)
             {
@@ -367,11 +367,35 @@ namespace TargetClearCS
             }
             else
             {
-                while (NumbersAllowed.Count < 5)
+                if (difficulty == "easy")
+                {
+                    while (NumbersAllowed.Count < 4)
+                    {
+                        NumbersAllowed.Add(GetNumber(MaxNumber));
+                    }
+                    return NumbersAllowed;
+                }
+                else if (difficulty == "medium")
+                {
+                    while (NumbersAllowed.Count < 3)
+                    {
+                        NumbersAllowed.Add(GetNumber(MaxNumber));
+                    }
+                    return NumbersAllowed;
+                }
+                else if (difficulty == "hard")
                 {
                     NumbersAllowed.Add(GetNumber(MaxNumber));
+                    return NumbersAllowed;
                 }
-                return NumbersAllowed;
+                else
+                {
+                    while (NumbersAllowed.Count < 5)
+                    {
+                        NumbersAllowed.Add(GetNumber(MaxNumber));
+                    }
+                    return NumbersAllowed;
+                }
             }
         }
     }
