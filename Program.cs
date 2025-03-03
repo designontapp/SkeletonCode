@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -32,6 +33,7 @@ namespace TargetClearCS
                 MaxTarget = 1000;
                 TrainingGame = true;
                 Targets = new List<int> { -1, -1, -1, -1, -1, 23, 9, 140, 82, 121, 34, 45, 68, 75, 34, 23, 119, 43, 23, 119 };
+                NumbersAllowed = FillNumbers(NumbersAllowed, TrainingGame, "standard", MaxNumber);
             }
             else
             {
@@ -39,8 +41,11 @@ namespace TargetClearCS
                 MaxTarget = 50;
                 TrainingGame = false;
                 Targets = CreateTargets(MaxNumberOfTargets, MaxTarget);
+                Console.Write("Write: standard/easy/medium/hard to select difficulty");
+                string difficulty = Console.ReadLine().ToLower();
+                NumbersAllowed = FillNumbers(NumbersAllowed, TrainingGame, difficulty, MaxNumber);
             }
-            NumbersAllowed = FillNumbers(NumbersAllowed, TrainingGame, "standard", MaxNumber);
+
             PlayGame(Targets, NumbersAllowed, TrainingGame, MaxTarget, MaxNumber);
             Console.ReadLine();
         }
@@ -345,6 +350,18 @@ namespace TargetClearCS
             return RGen.Next(MaxNumber) + 1;
         }
 
+        static int GetBigNumber()
+        {
+            switch (RGen.Next(4))
+            {
+                case 0: return 25;
+                case 1: return 50;
+                case 2: return 75;
+                case 3: return 100;
+                default: return 0;
+            }
+        }
+
         static List<int> CreateTargets(int SizeOfTargets, int MaxTarget)
         {
             List<int> Targets = new List<int>();
@@ -367,33 +384,53 @@ namespace TargetClearCS
             }
             else
             {
-                if (difficulty == "easy")
+                if (difficulty == "easy") // Easy
                 {
                     while (NumbersAllowed.Count < 4)
                     {
                         NumbersAllowed.Add(GetNumber(MaxNumber));
+                        
                     }
+
+                    while (NumbersAllowed.Count < 5)
+                    {
+                        NumbersAllowed.Add(GetBigNumber());
+                    }
+
                     return NumbersAllowed;
                 }
-                else if (difficulty == "medium")
+                else if (difficulty == "medium") //Medium
                 {
                     while (NumbersAllowed.Count < 3)
                     {
                         NumbersAllowed.Add(GetNumber(MaxNumber));
+
+                    }
+
+                    while (NumbersAllowed.Count < 5)
+                    {
+                        NumbersAllowed.Add(GetBigNumber());
+                    }
+
+                    return NumbersAllowed;
+                }
+                else if (difficulty == "hard") //Hard
+                {
+                    NumbersAllowed.Add(GetNumber(MaxNumber));
+
+                    while (NumbersAllowed.Count < 5)
+                    {
+                        NumbersAllowed.Add(GetBigNumber());
                     }
                     return NumbersAllowed;
                 }
-                else if (difficulty == "hard")
-                {
-                    NumbersAllowed.Add(GetNumber(MaxNumber));
-                    return NumbersAllowed;
-                }
-                else
+                else //Standard
                 {
                     while (NumbersAllowed.Count < 5)
                     {
                         NumbersAllowed.Add(GetNumber(MaxNumber));
                     }
+
                     return NumbersAllowed;
                 }
             }
