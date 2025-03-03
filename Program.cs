@@ -85,8 +85,10 @@ namespace TargetClearCS
 
         static bool CheckIfUserInputEvaluationIsATarget(List<int> Targets, List<string> UserInputInRPN, ref int Score)
         {
+            List<String> bonuses = UserInputInRPN.ToList();
             int UserInputEvaluation = EvaluateRPN(UserInputInRPN);
             bool UserInputEvaluationIsATarget = false;
+
             if (UserInputEvaluation != -1)
             {
                 for (int Count = 0; Count < Targets.Count; Count++)
@@ -99,16 +101,20 @@ namespace TargetClearCS
                     }
                 }
             }
+
             if (UserInputEvaluationIsATarget)
             {
-                foreach (string character in UserInputInRPN)
+                foreach (string inputString in bonuses)
                 {
-                    switch (character)
+                    foreach (char character in inputString)
                     {
-                        case "+": Score += 2; break;
-                        case "-": Score += 2; break;
-                        case "*": Score += 2; break;
-                        case "/": Score += 2; break;
+                        switch (character)
+                        {
+                            case '+': Score += 2; break;
+                            case '-': Score += 2; break;
+                            case '*': Score += 2; break;
+                            case '/': Score += 2; break;
+                        }
                     }
                 }
             }
