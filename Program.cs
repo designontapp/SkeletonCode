@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -57,9 +58,28 @@ namespace TargetClearCS
                 Console.Write("Enter an expression: ");
                 UserInput = Console.ReadLine();
                 Console.WriteLine();
+
+                if (UserInput == "MOVE")
+                {
+
+                    int TargetsLen = Targets.Count;
+                    List<int> temp = [];
+                    temp.Add(-1);
+                    for (int i = 0; i < (TargetsLen - 1); i++)
+                    {
+                        temp.Add(Targets[i]);
+                    }
+                    Targets.Clear();
+                    Targets = temp.ToList();
+                    Score--;
+                    continue;
+
+                }
+
                 if (CheckIfUserInputValid(UserInput))
                 {
                     UserInputInRPN = ConvertToRPN(UserInput);
+                    
                     if (CheckNumbersUsedAreAllInNumbersAllowed(NumbersAllowed, UserInputInRPN, MaxNumber))
                     {
                         if (CheckIfUserInputEvaluationIsATarget(Targets, UserInputInRPN, ref Score))
@@ -67,7 +87,7 @@ namespace TargetClearCS
                             RemoveNumbersUsed(UserInput, MaxNumber, NumbersAllowed);
                             NumbersAllowed = FillNumbers(NumbersAllowed, TrainingGame, MaxNumber);
                         }
-                    }
+                    }  
                 }
                 Score--;
                 if (Targets[0] != -1)
