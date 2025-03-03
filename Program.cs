@@ -99,6 +99,20 @@ namespace TargetClearCS
                     }
                 }
             }
+            if (UserInputEvaluationIsATarget)
+            {
+                foreach (string character in UserInputInRPN)
+                {
+                    switch (character)
+                    {
+                        case "+": Score += 2; break;
+                        case "-": Score += 2; break;
+                        case "*": Score += 2; break;
+                        case "/": Score += 2; break;
+                    }
+                }
+            }
+
             return UserInputEvaluationIsATarget;
         }
 
